@@ -1,5 +1,4 @@
 package za.co.entelect.challenge;
-
 import za.co.entelect.challenge.command.*;
 import za.co.entelect.challenge.entities.*;
 import za.co.entelect.challenge.enums.Terrain;
@@ -8,37 +7,48 @@ import java.util.*;
 
 import static java.lang.Math.max;
 
+import java.security.SecureRandom;
+
 public class Bot {
 
     private static final int maxSpeed = 9;
-    private List<Integer> directionList = new ArrayList<>();
+    private List<Command> directionList = new ArrayList<>();
 
     private Random random;
     private GameState gameState;
     private Car opponent;
     private Car myCar;
+    private final static Command ACCELERATE = new AccelerateCommand();
+    private final static Command Decelerate = new DecelerateCommand();
+    private final static Command LIZARD = new LizardCommand();
+    private final static Command OIL = new OilCommand();
+    private final static Command BOOST = new BoostCommand();
+    private final static Command EMP = new EmpCommand();
     private final static Command FIX = new FixCommand();
 
-    public Bot(Random random, GameState gameState) {
-        this.random = random;
-        this.gameState = gameState;
+    private final static Command TURN_RIGHT = new ChangeLaneCommand(1);
+    private final static Command TURN_LEFT = new ChangeLaneCommand(-1);
+
+    public Bot() {
+        this.random = new SecureRandom();
+        directionList.add(TURN_LEFT);
+        directionList.add(TURN_RIGHT);
+    }
+
+    public Command run(GameState gameState) {
         this.myCar = gameState.player;
         this.opponent = gameState.opponent;
 
-        directionList.add(-1);
-        directionList.add(1);
-    }
-
-    public Command run() {
         List<Object> blocks = getBlocksInFront(myCar.position.lane, myCar.position.block);
-        if (myCar.damage >= 5) {
-            return new FixCommand();
-        }
-        if (blocks.contains(Terrain.MUD)) {
-            int i = random.nextInt(directionList.size());
-            return new ChangeLaneCommand(directionList.get(i));
-        }
-        return new AccelerateCommand();
+        // Bawaan starter:
+        // if (myCar.damage >= 5) {
+        //     return new FixCommand();
+        // }
+        // if (blocks.contains(Terrain.MUD)) {
+        //     int i = random.nextInt(directionList.size());
+        //     return new ChangeLaneCommand(directionList.get(i));
+        // }
+        return Lurus.lurus(blocks, myCar);
     }
 
     /**
