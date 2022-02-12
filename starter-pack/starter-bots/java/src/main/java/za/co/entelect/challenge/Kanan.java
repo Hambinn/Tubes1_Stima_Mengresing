@@ -6,9 +6,7 @@ import za.co.entelect.challenge.enums.PowerUps;
 import za.co.entelect.challenge.enums.Terrain;
 import java.util.*;
 
-
-
-public class Lurus {
+public class Kanan {
     private final static Command ACCELERATE = new AccelerateCommand();
     private final static Command Decelerate = new DecelerateCommand();
     private final static Command LIZARD = new LizardCommand();
@@ -18,34 +16,16 @@ public class Lurus {
     private final static Command FIX = new FixCommand();
 
     private final static Command TURN_RIGHT = new ChangeLaneCommand(1);
-    private final static Command TURN_LEFT = new ChangeLaneCommand(-1);
-    public static Command lurus(List<Object> blocks, Car mycar) {
+    public static Command kanan(List<Object> blocks, Car mycar) {
         List<Object> currBlock = blocks;
         Car car = mycar;
         if(!currBlock.contains(Terrain.MUD) && !currBlock.contains(Terrain.WALL) && !currBlock.contains(Terrain.OIL_SPILL)) {
-            if (car.speed != 9 && !hasPowerUp(PowerUps.BOOST, car.powerups)){
-                return ACCELERATE;
-            }
-            else{
-                return BOOST;
-            }
-        }else{
-            if (hasPowerUp(PowerUps.LIZARD, car.powerups)){
-                return LIZARD;
-            }else{
-                // cek kiri kanannya gatau ini gmn
-                // belum nemu cara masukkinnya
-            }
+            // Belum beres
+            return TURN_RIGHT;
         }
-        return ACCELERATE;
-    }
-
-    private static Boolean hasPowerUp(PowerUps powerUpToCheck, PowerUps[] available) {
-        for (PowerUps powerUp: available) {
-            if (powerUp.equals(powerUpToCheck)) {
-                return true;
-            }
+        else {
+            return TURN_RIGHT;
         }
-        return false;
     }
+    // Kayanya gaperlu power up sih ya, soalnya udh fokus di Lurus si powerup
 }
