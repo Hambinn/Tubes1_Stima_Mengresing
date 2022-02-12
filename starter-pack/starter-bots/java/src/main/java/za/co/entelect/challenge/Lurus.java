@@ -10,7 +10,8 @@ import java.util.*;
 
 public class Lurus {
     private final static Command ACCELERATE = new AccelerateCommand();
-    private final static Command Decelerate = new DecelerateCommand();
+    private final static Command DECELERATE = new DecelerateCommand();
+    private final static Command DO_NOTHING = new DoNothingCommand();
     private final static Command LIZARD = new LizardCommand();
     private final static Command OIL = new OilCommand();
     private final static Command BOOST = new BoostCommand();
@@ -33,11 +34,9 @@ public class Lurus {
             if (hasPowerUp(PowerUps.LIZARD, car.powerups)){
                 return LIZARD;
             }else{
-                // cek kiri kanannya gatau ini gmn
-                // belum nemu cara masukkinnya
+                return DO_NOTHING;
             }
         }
-        return ACCELERATE;
     }
 
     private static Boolean hasPowerUp(PowerUps powerUpToCheck, PowerUps[] available) {

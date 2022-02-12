@@ -17,15 +17,7 @@ public class Kanan {
 
     private final static Command TURN_RIGHT = new ChangeLaneCommand(1);
     public static Command kanan(List<Object> blocks, Car mycar) {
-        List<Object> currBlock = blocks;
-        Car car = mycar;
-        if(!currBlock.contains(Terrain.MUD) && !currBlock.contains(Terrain.WALL) && !currBlock.contains(Terrain.OIL_SPILL)) {
-            // Belum beres
-            return TURN_RIGHT;
-        }
-        else {
-            return TURN_RIGHT;
-        }
+        return TURN_RIGHT;
     }
     // Kayanya gaperlu power up sih ya, soalnya udh fokus di Lurus si powerup
 }

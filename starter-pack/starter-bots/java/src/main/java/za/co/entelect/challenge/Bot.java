@@ -19,7 +19,8 @@ public class Bot {
     private Car opponent;
     private Car myCar;
     private final static Command ACCELERATE = new AccelerateCommand();
-    private final static Command Decelerate = new DecelerateCommand();
+    private final static Command DO_NOTHING = new DoNothingCommand();
+    private final static Command DECELERATE = new DecelerateCommand();
     private final static Command LIZARD = new LizardCommand();
     private final static Command OIL = new OilCommand();
     private final static Command BOOST = new BoostCommand();
@@ -38,8 +39,6 @@ public class Bot {
     public Command run(GameState gameState) {
         this.myCar = gameState.player;
         this.opponent = gameState.opponent;
-
-        List<Object> blocks = getBlocksInFront(myCar.position.lane, myCar.position.block);
         // Bawaan starter:
         // if (myCar.damage >= 5) {
         //     return new FixCommand();
@@ -48,7 +47,38 @@ public class Bot {
         //     int i = random.nextInt(directionList.size());
         //     return new ChangeLaneCommand(directionList.get(i));
         // }
-        return Lurus.lurus(blocks, myCar);
+
+        /*
+        // ALGORITMA PEMILIHAN ARAH BERDASARKAN KEPUTUSAN DI SETIAP ARAH
+        // Ini ide versi saya, jadi saya komen dulu karna belum pasti
+        // Saya juga sedikit update beberapa di file lurus
+        // Kalo ada yg ngacauin, bilang ya hehehe
+        // -- Raka
+        
+        List<Object> blocksLurus = getBlocksInFront(myCar.position.lane, myCar.position.block);
+        Command option1 = Lurus.lurus(blocksLurus, myCar);
+
+        List<Object> blocksKiri = getBlocksInFront(myCar.position.lane + 1, myCar.position.block);
+        List<Object> blocksKanan = getBlocksInFront(myCar.position.lane - 1, myCar.position.block);
+        Command option2 = RLcheck.cekKananAtauKiri(myCar, blocksKiri, blocksKanan);
+
+        
+        if (option1 == DO_NOTHING && option2 == DO_NOTHING){
+            return DO_NOTHING;
+        }
+        else{
+            if (option2 == DO_NOTHING && option1 != DO_NOTHING){
+                return option1;
+            }
+            else if (option2 != DO_NOTHING && option1 == DO_NOTHING){
+                return option2;
+            }
+            else{
+                return option1;
+            }
+        }*/
+
+        return DO_NOTHING; //cuma biar ga error, nitip
     }
 
     /**
