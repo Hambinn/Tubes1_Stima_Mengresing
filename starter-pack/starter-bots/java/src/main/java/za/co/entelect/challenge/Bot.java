@@ -30,25 +30,10 @@ public class Bot {
     private final static Command TURN_RIGHT = new ChangeLaneCommand(1);
     private final static Command TURN_LEFT = new ChangeLaneCommand(-1);
 
-    public Bot() {
-        this.random = new SecureRandom();
-        directionList.add(TURN_LEFT);
-        directionList.add(TURN_RIGHT);
-    }
-
     public Command run(GameState gameState) {
         this.myCar = gameState.player;
         this.opponent = gameState.opponent;
-        // Bawaan starter:
-        // if (myCar.damage >= 5) {
-        //     return new FixCommand();
-        // }
-        // if (blocks.contains(Terrain.MUD)) {
-        //     int i = random.nextInt(directionList.size());
-        //     return new ChangeLaneCommand(directionList.get(i));
-        // }
 
-        /*
         // ALGORITMA PEMILIHAN ARAH BERDASARKAN KEPUTUSAN DI SETIAP ARAH
         // Ini ide versi saya, jadi saya komen dulu karna belum pasti
         // Saya juga sedikit update beberapa di file lurus
@@ -76,9 +61,7 @@ public class Bot {
             else{
                 return option1;
             }
-        }*/
-
-        return DO_NOTHING; //cuma biar ga error, nitip
+        }
     }
 
     /**

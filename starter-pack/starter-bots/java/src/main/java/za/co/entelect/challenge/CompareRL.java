@@ -64,6 +64,6 @@ public class CompareRL{
                 }
             }
         }
-
+        return DO_NOTHING;
     }
 }
