@@ -48,7 +48,7 @@ public class Lurus {
             if (hasPowerUp(PowerUps.LIZARD, mycar.powerups)){
                 return LIZARD;
             }else{
-                return DO_NOTHING;
+                return ACCELERATE;
             }
         }
     }

@@ -31,7 +31,6 @@ public class Bot {
     public Command run(GameState gameState) {
         Car myCar = gameState.player;
         opponent = gameState.opponent;
-        int maxSpeed;
 
         
 
@@ -50,7 +49,7 @@ public class Bot {
 
         
         if (option1 == DO_NOTHING && option2 == DO_NOTHING){
-            return DO_NOTHING;
+            return ACCELERATE;
         }
         else{
             if (option2 == DO_NOTHING && option1 != DO_NOTHING){
@@ -75,7 +74,7 @@ public class Bot {
         int startBlock = map.get(0)[0].position.block;
 
         Lane[] laneList = map.get(lane - 1);
-        for (int i = max(block - startBlock, 0); i <= block - startBlock + speed; i++) {
+        for (int i = max(block - startBlock, 0); i <= block - startBlock + 9; i++) {
             if (laneList[i] == null || laneList[i].terrain == Terrain.FINISH) {
                 break;
             }
