@@ -10,14 +10,12 @@ import static java.lang.Math.max;
 import java.security.SecureRandom;
 
 public class Bot {
-
-    private static final int maxSpeed = 9;
     private List<Command> directionList = new ArrayList<>();
 
     private Random random;
     private GameState gameState;
     private Car opponent;
-    private Car myCar;
+    
     private final static Command ACCELERATE = new AccelerateCommand();
     private final static Command DO_NOTHING = new DoNothingCommand();
     private final static Command DECELERATE = new DecelerateCommand();
@@ -31,8 +29,11 @@ public class Bot {
     private final static Command TURN_LEFT = new ChangeLaneCommand(-1);
 
     public Command run(GameState gameState) {
-        this.myCar = gameState.player;
-        this.opponent = gameState.opponent;
+        Car myCar = gameState.player;
+        opponent = gameState.opponent;
+        int maxSpeed;
+
+        
 
         // ALGORITMA PEMILIHAN ARAH BERDASARKAN KEPUTUSAN DI SETIAP ARAH
         // Ini ide versi saya, jadi saya komen dulu karna belum pasti
@@ -40,11 +41,11 @@ public class Bot {
         // Kalo ada yg ngacauin, bilang ya hehehe
         // -- Raka
         
-        List<Object> blocksLurus = getBlocksInFront(myCar.position.lane, myCar.position.block);
+        List<Object> blocksLurus = getBlocksInFront(myCar.position.lane, myCar.position.block, myCar.speed);
         Command option1 = Lurus.lurus(blocksLurus, myCar);
 
-        List<Object> blocksKiri = getBlocksInFront(myCar.position.lane + 1, myCar.position.block);
-        List<Object> blocksKanan = getBlocksInFront(myCar.position.lane - 1, myCar.position.block);
+        List<Object> blocksKiri = getBlocksInFront(myCar.position.lane + 1, myCar.position.block, myCar.speed);
+        List<Object> blocksKanan = getBlocksInFront(myCar.position.lane - 1, myCar.position.block, myCar.speed);
         Command option2 = RLcheck.cekKananAtauKiri(myCar, blocksKiri, blocksKanan);
 
         
@@ -68,13 +69,13 @@ public class Bot {
      * Returns map of blocks and the objects in the for the current lanes, returns the amount of blocks that can be
      * traversed at max speed.
      **/
-    private List<Object> getBlocksInFront(int lane, int block) {
+    private List<Object> getBlocksInFront(int lane, int block, int speed) {
         List<Lane[]> map = gameState.lanes;
         List<Object> blocks = new ArrayList<>();
         int startBlock = map.get(0)[0].position.block;
 
         Lane[] laneList = map.get(lane - 1);
-        for (int i = max(block - startBlock, 0); i <= block - startBlock + Bot.maxSpeed; i++) {
+        for (int i = max(block - startBlock, 0); i <= block - startBlock + speed; i++) {
             if (laneList[i] == null || laneList[i].terrain == Terrain.FINISH) {
                 break;
             }

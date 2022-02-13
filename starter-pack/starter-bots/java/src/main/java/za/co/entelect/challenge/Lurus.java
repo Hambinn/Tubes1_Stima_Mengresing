@@ -22,16 +22,30 @@ public class Lurus {
     private final static Command TURN_LEFT = new ChangeLaneCommand(-1);
     public static Command lurus(List<Object> blocks, Car mycar) {
         List<Object> currBlock = blocks;
-        Car car = mycar;
+        int maxSpeed = 9;
+        if(mycar.damage == 0) {
+            maxSpeed = 15;
+        }else if(mycar.damage == 1){
+            maxSpeed = 9;
+        }else if(mycar.damage == 2){
+            maxSpeed = 7;
+        }else if(mycar.damage == 3){
+            maxSpeed = 6;
+        }else if(mycar.damage == 4){
+            maxSpeed = 3;
+        }else if(mycar.damage == 5){
+            maxSpeed = 0;
+        }
+
         if(!currBlock.contains(Terrain.MUD) && !currBlock.contains(Terrain.WALL) && !currBlock.contains(Terrain.OIL_SPILL)) {
-            if (car.speed != 9 && !hasPowerUp(PowerUps.BOOST, car.powerups)){
+            if (mycar.speed < maxSpeed && !hasPowerUp(PowerUps.BOOST, mycar.powerups)){
                 return ACCELERATE;
             }
             else{
                 return BOOST;
             }
         }else{
-            if (hasPowerUp(PowerUps.LIZARD, car.powerups)){
+            if (hasPowerUp(PowerUps.LIZARD, mycar.powerups)){
                 return LIZARD;
             }else{
                 return DO_NOTHING;
