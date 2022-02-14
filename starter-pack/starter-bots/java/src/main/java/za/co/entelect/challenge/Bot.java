@@ -82,7 +82,7 @@ public class Bot {
         List<Object> blocks = new ArrayList<>();
         int startBlock = map.get(0)[0].position.block;
 
-        Lane[] laneList = map.get(lane - 1);
+        Lane[] laneList = map.get(lane);
         for (int i = max(block - startBlock, 0); i <= block - startBlock + 9; i++) {
             if (laneList[i] == null || laneList[i].terrain == Terrain.FINISH) {
                 break;

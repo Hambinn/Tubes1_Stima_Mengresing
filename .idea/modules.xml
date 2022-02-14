@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Overdrive.iml" filepath="$PROJECT_DIR$/.idea/Overdrive.iml" />
+      <module fileurl="file://$PROJECT_DIR$/starter-pack/starter-bots/java/java-starter-bot.iml" filepath="$PROJECT_DIR$/starter-pack/starter-bots/java/java-starter-bot.iml" />
     </modules>
   </component>
 </project>
