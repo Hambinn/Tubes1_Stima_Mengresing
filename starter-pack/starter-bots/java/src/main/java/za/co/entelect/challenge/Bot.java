@@ -56,7 +56,9 @@ public class Bot {
             List<Object> blocksKiri = getBlocksInFront(myCar.position.lane + 1, myCar.position.block, gameState);
             option2 = RLcheck.canRightAndLeft(blocksKiri, blocksKanan);
         }
-
+        if (myCar.damage >= 4){
+            return FIX;
+        }
         if (option1 == DO_NOTHING && option2 == DO_NOTHING){
             return ACCELEREATE;
         }
