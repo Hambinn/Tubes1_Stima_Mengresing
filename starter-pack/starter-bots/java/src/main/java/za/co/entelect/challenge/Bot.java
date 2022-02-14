@@ -32,8 +32,6 @@ public class Bot {
         Car myCar = gameState.player;
         opponent = gameState.opponent;
 
-        
-
         // ALGORITMA PEMILIHAN ARAH BERDASARKAN KEPUTUSAN DI SETIAP ARAH
         // Ini ide versi saya, jadi saya komen dulu karna belum pasti
         // Saya juga sedikit update beberapa di file lurus
@@ -42,12 +40,23 @@ public class Bot {
         
         List<Object> blocksLurus = getBlocksInFront(myCar.position.lane, myCar.position.block, gameState);
         Command option1 = Lurus.lurus(blocksLurus, myCar);
+        Command option2;
 
-        List<Object> blocksKiri = getBlocksInFront(myCar.position.lane + 1, myCar.position.block, gameState);
-        List<Object> blocksKanan = getBlocksInFront(myCar.position.lane - 1, myCar.position.block, gameState);
-        Command option2 = RLcheck.cekKananAtauKiri(myCar, blocksKiri, blocksKanan);
+        int currentLane = myCar.position.lane;
+        if (currentLane == 3){
+            List<Object> blocksKanan = getBlocksInFront(myCar.position.lane - 1, myCar.position.block, gameState);
+            option2 = RLcheck.OnlyRight(blocksKanan);
+        }
+        else if (currentLane == 0){
+            List<Object> blocksKiri = getBlocksInFront(myCar.position.lane + 1, myCar.position.block, gameState);
+            option2 = RLcheck.OnlyLeft(blocksKiri);
+        }
+        else{
+            List<Object> blocksKanan = getBlocksInFront(myCar.position.lane - 1, myCar.position.block, gameState);
+            List<Object> blocksKiri = getBlocksInFront(myCar.position.lane + 1, myCar.position.block, gameState);
+            option2 = RLcheck.canRightAndLeft(blocksKiri, blocksKanan);
+        }
 
-        
         if (option1 == DO_NOTHING && option2 == DO_NOTHING){
             return ACCELEREATE;
         }

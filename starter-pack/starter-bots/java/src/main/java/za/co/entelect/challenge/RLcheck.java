@@ -11,42 +11,32 @@ public class RLcheck {
 
     private final static Command TURN_RIGHT = new ChangeLaneCommand(1);
     private final static Command TURN_LEFT = new ChangeLaneCommand(-1);
-    public static Command cekKananAtauKiri(Car myCar, List<Object> blocksKiri, List<Object> blocksKanan) {
-        // Cek dulu ada di paling kiri banget atau kanan banget atau di tengah
-        int currentLane = myCar.position.lane;
-        if (currentLane == 3){
-            return OnlyRight(blocksKanan);
-        }
-        else if (currentLane == 0){
-            return OnlyLeft(blocksKiri);
+    public static Command canRightAndLeft(List<Object> blocksKiri, List<Object> blocksKanan) {
+        // Masukkin blockLane masing-masing arah
+        List<Object> leftBlock = blocksKiri;
+        List<Object> rightBlock = blocksKanan;
+
+        // Memastikan bisa belok atau engga
+        boolean isTurnLeft = !leftBlock.contains(Terrain.MUD) && !leftBlock.contains(Terrain.WALL) && !leftBlock.contains(Terrain.OIL_SPILL);
+        boolean isTurnRight = !rightBlock.contains(Terrain.MUD) && !rightBlock.contains(Terrain.WALL) && !rightBlock.contains(Terrain.OIL_SPILL);
+        
+        if (isTurnLeft && isTurnRight){ 
+            // Kiri dan kanan bisa. Niatnya pakai fungsi random tapi belum nyari caranya
+            return TURN_LEFT;
         }
         else{
-            // Masukkin blockLane masing-masing arah
-            List<Object> leftBlock = blocksKiri;
-            List<Object> rightBlock = blocksKanan;
-
-            // Memastikan bisa belok atau engga
-            boolean isTurnLeft = !leftBlock.contains(Terrain.MUD) && !leftBlock.contains(Terrain.WALL) && !leftBlock.contains(Terrain.OIL_SPILL);
-            boolean isTurnRight = !rightBlock.contains(Terrain.MUD) && !rightBlock.contains(Terrain.WALL) && !rightBlock.contains(Terrain.OIL_SPILL);
-            
-            if (isTurnLeft && isTurnRight){ 
-                // Kiri dan kanan bisa. Niatnya pakai fungsi random tapi belum nyari caranya
+            if (isTurnLeft == true && isTurnRight == false){
+                // Gabagus ke kanan
                 return TURN_LEFT;
             }
-            else{
-                if (isTurnLeft == true && isTurnRight == false){
-                    // Gabagus ke kanan
-                    return TURN_LEFT;
-                }
-                else if (isTurnLeft == false && isTurnRight == true){
-                    // Gabagus ke kiri
-                    return TURN_RIGHT;
-                }
-                else{ 
-                    // dua-duanya false
-                    // Return do nothing biar tar di luar aja dibandingin kualitas keputusannya sm yang lurus
-                    return DO_NOTHING;
-                }
+            else if (isTurnLeft == false && isTurnRight == true){
+                // Gabagus ke kiri
+                return TURN_RIGHT;
+            }
+            else{ 
+                // dua-duanya false
+                // Return do nothing biar tar di luar aja dibandingin kualitas keputusannya sm yang lurus
+                return DO_NOTHING;
             }
         }
     }
