@@ -16,7 +16,7 @@ public class Bot {
     private GameState gameState;
     private Car opponent;
     
-    private final static Command ACCELERATE = new AccelerateCommand();
+    private final static Command ACCELEREATE = new AccelerateCommand();
     private final static Command DO_NOTHING = new DoNothingCommand();
     private final static Command DECELERATE = new DecelerateCommand();
     private final static Command LIZARD = new LizardCommand();
@@ -40,16 +40,16 @@ public class Bot {
         // Kalo ada yg ngacauin, bilang ya hehehe
         // -- Raka
         
-        List<Object> blocksLurus = getBlocksInFront(myCar.position.lane, myCar.position.block, myCar.speed);
+        List<Object> blocksLurus = getBlocksInFront(myCar.position.lane, myCar.position.block, gameState);
         Command option1 = Lurus.lurus(blocksLurus, myCar);
 
-        List<Object> blocksKiri = getBlocksInFront(myCar.position.lane + 1, myCar.position.block, myCar.speed);
-        List<Object> blocksKanan = getBlocksInFront(myCar.position.lane - 1, myCar.position.block, myCar.speed);
+        List<Object> blocksKiri = getBlocksInFront(myCar.position.lane + 1, myCar.position.block, gameState);
+        List<Object> blocksKanan = getBlocksInFront(myCar.position.lane - 1, myCar.position.block, gameState);
         Command option2 = RLcheck.cekKananAtauKiri(myCar, blocksKiri, blocksKanan);
 
         
         if (option1 == DO_NOTHING && option2 == DO_NOTHING){
-            return ACCELERATE;
+            return ACCELEREATE;
         }
         else{
             if (option2 == DO_NOTHING && option1 != DO_NOTHING){
@@ -68,7 +68,7 @@ public class Bot {
      * Returns map of blocks and the objects in the for the current lanes, returns the amount of blocks that can be
      * traversed at max speed.
      **/
-    private List<Object> getBlocksInFront(int lane, int block, int speed) {
+    private List<Object> getBlocksInFront(int lane, int block, GameState gameState) {
         List<Lane[]> map = gameState.lanes;
         List<Object> blocks = new ArrayList<>();
         int startBlock = map.get(0)[0].position.block;

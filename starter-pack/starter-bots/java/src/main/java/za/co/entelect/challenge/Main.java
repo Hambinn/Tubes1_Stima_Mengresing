@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import za.co.entelect.challenge.command.Command;
 import za.co.entelect.challenge.entities.GameState;
 
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Random;
@@ -16,7 +15,8 @@ public class Main {
     private static final String STATE_FILE_NAME = "state.json";
 
     /**
-     * Read the current state, feed it to the bot, get the output and print it to stdout
+     * Read the current state, feed it to the bot, get the output and print it to
+     * stdout
      *
      * @param args the args
      **/
@@ -26,7 +26,7 @@ public class Main {
         Gson gson = new Gson();
         Bot bot = new Bot();
 
-        while(true) {
+        while (true) {
             try {
                 int roundNumber = sc.nextInt();
 
