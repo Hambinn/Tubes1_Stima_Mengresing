@@ -45,12 +45,12 @@ public class Bot {
         int jmlObstacleLurus = 999;
 
         int currentLane = myCar.position.lane;
-        if (currentLane == 0){
+        if (currentLane == 1){
             List<Object> blocksKanan = getBlocksInFront(myCar.position.lane + 1, myCar.position.block, gameState, myCar.speed);
             jmlObstacleKanan = cntObstacleInFront(blocksKanan);
             option2 = OnlyRight(blocksKanan);
         }
-        else if (currentLane == 3){
+        else if (currentLane == 4){
             List<Object> blocksKiri = getBlocksInFront(myCar.position.lane - 1, myCar.position.block, gameState, myCar.speed);
             jmlObstacleKiri = cntObstacleInFront(blocksKiri);
             option2 = OnlyLeft(blocksKiri);
