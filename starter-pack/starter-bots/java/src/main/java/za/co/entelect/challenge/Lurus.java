@@ -44,13 +44,11 @@ public class Lurus {
             else{
                 return BOOST;
             }
-        }else if(currBlock.size()> 2){
-            return DO_NOTHING;
         }else{
             if (hasPowerUp(PowerUps.LIZARD, mycar.powerups)){
                 return LIZARD;
             }else{
-                return ACCELERATE;
+                return DO_NOTHING;
             }
         }
     }

@@ -6,10 +6,9 @@ import za.co.entelect.challenge.entities.GameState;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Random;
 import java.util.Scanner;
 
-public class Main {
+public class Main { 
 
     private static final String ROUNDS_DIRECTORY = "rounds";
     private static final String STATE_FILE_NAME = "state.json";
