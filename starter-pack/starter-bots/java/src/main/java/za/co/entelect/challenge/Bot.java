@@ -62,7 +62,7 @@ public class Bot {
             jmlObstacleKiri = cntObstacleInFront(blocksKiri);
             option2 = canRightAndLeft(blocksKiri, blocksKanan);
         }
-        if (myCar.damage >= 4){
+        if (myCar.damage >= 3){
             return FIX;
         }
         
