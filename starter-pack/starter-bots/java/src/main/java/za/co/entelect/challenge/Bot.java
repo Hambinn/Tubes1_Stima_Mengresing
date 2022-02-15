@@ -46,18 +46,18 @@ public class Bot {
 
         int currentLane = myCar.position.lane;
         if (currentLane == 3){
-            List<Object> blocksKanan = getBlocksInFront(myCar.position.lane - 1, myCar.position.block, gameState, myCar.speed);
+            List<Object> blocksKanan = getBlocksInFront(myCar.position.lane + 1, myCar.position.block, gameState, myCar.speed);
             jmlObstacleKanan = cntObstacleInFront(blocksKanan);
             option2 = OnlyRight(blocksKanan);
         }
         else if (currentLane == 0){
-            List<Object> blocksKiri = getBlocksInFront(myCar.position.lane + 1, myCar.position.block, gameState, myCar.speed);
+            List<Object> blocksKiri = getBlocksInFront(myCar.position.lane - 1, myCar.position.block, gameState, myCar.speed);
             jmlObstacleKiri = cntObstacleInFront(blocksKiri);
             option2 = OnlyLeft(blocksKiri);
         }
         else{
-            List<Object> blocksKanan = getBlocksInFront(myCar.position.lane - 1, myCar.position.block, gameState, myCar.speed);
-            List<Object> blocksKiri = getBlocksInFront(myCar.position.lane + 1, myCar.position.block, gameState, myCar.speed);
+            List<Object> blocksKanan = getBlocksInFront(myCar.position.lane + 1, myCar.position.block, gameState, myCar.speed);
+            List<Object> blocksKiri = getBlocksInFront(myCar.position.lane - 1, myCar.position.block, gameState, myCar.speed);
             jmlObstacleKanan = cntObstacleInFront(blocksKanan);
             jmlObstacleKiri = cntObstacleInFront(blocksKiri);
             option2 = canRightAndLeft(blocksKiri, blocksKanan);
