@@ -2,14 +2,11 @@ package za.co.entelect.challenge;
 import za.co.entelect.challenge.command.*;
 import za.co.entelect.challenge.entities.*;
 import za.co.entelect.challenge.enums.Terrain;
+import za.co.entelect.challenge.enums.PowerUps;
 
 import java.util.*;
 
 import static java.lang.Math.*;
-
-
-import java.security.SecureRandom;
-
 public class Bot {
     private List<Command> directionList = new ArrayList<>();
 
@@ -40,7 +37,7 @@ public class Bot {
         // -- Raka
         
         List<Object> blocksLurus = getBlocksInFront(myCar.position.lane, myCar.position.block, gameState, myCar.speed);
-        Command option1 = Lurus.lurus(blocksLurus, myCar);
+        Command option1 = lurus(blocksLurus, myCar);
         
         Command option2;
         int jmlObstacleKiri = 999;
@@ -51,19 +48,19 @@ public class Bot {
         if (currentLane == 3){
             List<Object> blocksKanan = getBlocksInFront(myCar.position.lane - 1, myCar.position.block, gameState, myCar.speed);
             jmlObstacleKanan = cntObstacleInFront(blocksKanan);
-            option2 = RLcheck.OnlyRight(blocksKanan);
+            option2 = OnlyRight(blocksKanan);
         }
         else if (currentLane == 0){
             List<Object> blocksKiri = getBlocksInFront(myCar.position.lane + 1, myCar.position.block, gameState, myCar.speed);
             jmlObstacleKiri = cntObstacleInFront(blocksKiri);
-            option2 = RLcheck.OnlyLeft(blocksKiri);
+            option2 = OnlyLeft(blocksKiri);
         }
         else{
             List<Object> blocksKanan = getBlocksInFront(myCar.position.lane - 1, myCar.position.block, gameState, myCar.speed);
             List<Object> blocksKiri = getBlocksInFront(myCar.position.lane + 1, myCar.position.block, gameState, myCar.speed);
             jmlObstacleKanan = cntObstacleInFront(blocksKanan);
             jmlObstacleKiri = cntObstacleInFront(blocksKiri);
-            option2 = RLcheck.canRightAndLeft(blocksKiri, blocksKanan);
+            option2 = canRightAndLeft(blocksKiri, blocksKanan);
         }
         if (myCar.damage >= 4){
             return FIX;
@@ -133,4 +130,107 @@ public class Bot {
         }
         return count;
     }
+
+    public static Command lurus(List<Object> blocks, Car mycar) {
+        List<Object> currBlock = blocks;
+        int maxSpeed = 9;
+        if(mycar.damage == 0) {
+            maxSpeed = 15;
+        }else if(mycar.damage == 1){
+            maxSpeed = 9;
+        }else if(mycar.damage == 2){
+            maxSpeed = 7;
+        }else if(mycar.damage == 3){
+            maxSpeed = 6;
+        }else if(mycar.damage == 4){
+            maxSpeed = 3;
+        }else if(mycar.damage == 5){
+            maxSpeed = 0;
+        }
+
+        if(!currBlock.contains(Terrain.MUD) && !currBlock.contains(Terrain.WALL) && !currBlock.contains(Terrain.OIL_SPILL)) {
+            if (mycar.speed < maxSpeed && !hasPowerUp(PowerUps.BOOST, mycar.powerups)){
+                return ACCELERATE;
+            }
+            else{
+                if (hasPowerUp(PowerUps.BOOST, mycar.powerups)){
+                    return BOOST;
+                }
+                else{
+                    return ACCELERATE;
+                }
+            }
+        }else{
+            if (hasPowerUp(PowerUps.LIZARD, mycar.powerups)){
+                // Entah kenapa, lizard dipake padahal gaada apa apa
+                return LIZARD;
+            }else{
+                return DO_NOTHING;
+            }
+        }
+    }
+
+    private static Boolean hasPowerUp(PowerUps powerUpToCheck, PowerUps[] available) {
+        for (PowerUps powerUp: available) {
+            if (powerUp.equals(powerUpToCheck)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Command canRightAndLeft(List<Object> blocksKiri, List<Object> blocksKanan) {
+        // Masukkin blockLane masing-masing arah
+        List<Object> leftBlock = blocksKiri;
+        List<Object> rightBlock = blocksKanan;
+
+        // Memastikan bisa belok atau engga
+        boolean isTurnLeft = !leftBlock.contains(Terrain.MUD) && !leftBlock.contains(Terrain.WALL) && !leftBlock.contains(Terrain.OIL_SPILL);
+        boolean isTurnRight = !rightBlock.contains(Terrain.MUD) && !rightBlock.contains(Terrain.WALL) && !rightBlock.contains(Terrain.OIL_SPILL);
+        
+        if (isTurnLeft && isTurnRight){ 
+            // Kiri dan kanan bisa. Niatnya pakai fungsi random tapi belum nyari caranya
+            return TURN_LEFT;
+        }
+        else{
+            if (isTurnLeft == true && isTurnRight == false){
+                // Gabagus ke kanan
+                return TURN_LEFT;
+            }
+            else if (isTurnLeft == false && isTurnRight == true){
+                // Gabagus ke kiri
+                return TURN_RIGHT;
+            }
+            else{ 
+                // dua-duanya false
+                // Return do nothing biar tar di luar aja dibandingin kualitas keputusannya sm yang lurus
+                return DO_NOTHING;
+            }
+        }
+    }
+
+    public static Command OnlyRight(List<Object> blocksKanan){
+        // Logic nya mirip sama yang di atas
+        List<Object> rightBlock = blocksKanan;
+        boolean isTurnRight = !rightBlock.contains(Terrain.MUD) && !rightBlock.contains(Terrain.WALL) && !rightBlock.contains(Terrain.OIL_SPILL);
+        if (isTurnRight){
+            return TURN_RIGHT;
+        }
+        else{
+            return DO_NOTHING;
+        }
+    }
+
+    public static Command OnlyLeft(List<Object> blocksKiri){
+        // Logic nya mirip sama yang di atas
+        List<Object> leftBlock = blocksKiri;
+        boolean isTurnLeft = !leftBlock.contains(Terrain.MUD) && !leftBlock.contains(Terrain.WALL) && !leftBlock.contains(Terrain.OIL_SPILL);
+        if (isTurnLeft){
+            return TURN_LEFT;
+        }
+        else{
+            return DO_NOTHING;
+        }
+    }
+
 }
