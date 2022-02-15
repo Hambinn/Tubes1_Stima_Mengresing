@@ -42,10 +42,16 @@ public class Lurus {
                 return ACCELERATE;
             }
             else{
-                return BOOST;
+                if (hasPowerUp(PowerUps.BOOST, mycar.powerups)){
+                    return BOOST;
+                }
+                else{
+                    return ACCELERATE;
+                }
             }
         }else{
             if (hasPowerUp(PowerUps.LIZARD, mycar.powerups)){
+                // Entah kenapa, lizard dipake padahal gaada apa apa
                 return LIZARD;
             }else{
                 return DO_NOTHING;
@@ -62,3 +68,5 @@ public class Lurus {
         return false;
     }
 }
+
+// penggunaan lizard tidak tepat
