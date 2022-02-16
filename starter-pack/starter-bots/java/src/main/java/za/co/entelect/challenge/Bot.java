@@ -12,7 +12,6 @@ public class Bot {
     private GameState gameState;
     private Car opponent;
 
-    
     private final static Command ACCELERATE = new AccelerateCommand();
     private final static Command DO_NOTHING = new DoNothingCommand();
     private final static Command DECELERATE = new DecelerateCommand();
@@ -28,7 +27,7 @@ public class Bot {
 
     public Command run(GameState gameState) {
         Car myCar = gameState.player;
-        opponent = gameState.opponent;
+        Car opponent = gameState.opponent;
 
         // ALGORITMA PEMILIHAN ARAH BERDASARKAN KEPUTUSAN DI SETIAP ARAH
         // Ini ide versi saya, jadi saya komen dulu karna belum pasti
@@ -40,11 +39,10 @@ public class Bot {
         int jmlObstacleLurus = 999;
         
         List<Object> blocksLurus = getBlocksInFront(myCar.position.lane, myCar.position.block, gameState, myCar.speed);
-        Command option1 = lurus(blocksLurus, myCar);
+        Command option1 = lurus(blocksLurus, myCar, opponent);
         jmlObstacleLurus = cntObstacleInFront(blocksLurus);
         
         Command option2;
-        
 
         int currentLane = myCar.position.lane;
         if (currentLane == 1){
@@ -135,7 +133,7 @@ public class Bot {
         return count;
     }
 
-    public static Command lurus(List<Object> blocks, Car mycar) {
+    public static Command lurus(List<Object> blocks, Car mycar, Car opponentCar) {
         List<Object> currBlock = blocks;
         int maxSpeed = 9;
         if(mycar.damage == 0) {
@@ -160,7 +158,26 @@ public class Bot {
                 if (hasPowerUp(PowerUps.BOOST, mycar.powerups)){
                     return BOOST;
                 }
+                if (mycar.speed >= maxSpeed){
+                    //cek apakah memiliki OIL, EMP, TWEET
+                    if (hasPowerUp(PowerUps.EMP, mycar.powerups)){
+                        if ((opponentCar.position.lane == mycar.position.lane) &&
+                           (opponentCar.position.block > mycar.position.block)){
+                            return EMP;
+                        }
+                    }
+                    if (hasPowerUp(PowerUps.TWEET, mycar.powerups)){
+                        return new TweetCommand(opponentCar.position.lane, opponentCar.position.block + 1);
+                    }
+                    if (hasPowerUp(PowerUps.OIL, mycar.powerups)){
+                        return OIL;
+                    }
+                    else{
+                        return ACCELERATE;
+                    }
+                }
                 else{
+                    // speed tidak maksimum dan tidak punya power ups
                     return ACCELERATE;
                 }
             }
