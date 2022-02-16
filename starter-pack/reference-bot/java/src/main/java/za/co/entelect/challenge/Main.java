@@ -3,17 +3,12 @@ package za.co.entelect.challenge;
 import com.google.gson.Gson;
 import za.co.entelect.challenge.command.Command;
 import za.co.entelect.challenge.entities.GameState;
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Random;
 import java.util.Scanner;
-
-public class Main {
-
+public class Main { 
     private static final String ROUNDS_DIRECTORY = "rounds";
     private static final String STATE_FILE_NAME = "state.json";
-
     /**
      * Read the current state, feed it to the bot, get the output and print it to
      * stdout
