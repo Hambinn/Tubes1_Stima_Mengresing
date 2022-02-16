@@ -8,11 +8,10 @@ import java.util.*;
 
 import static java.lang.Math.*;
 public class Bot {
-    private List<Command> directionList = new ArrayList<>();
-
     private Random random;
     private GameState gameState;
     private Car opponent;
+
     
     private final static Command ACCELERATE = new AccelerateCommand();
     private final static Command DO_NOTHING = new DoNothingCommand();
@@ -22,9 +21,10 @@ public class Bot {
     private final static Command BOOST = new BoostCommand();
     private final static Command EMP = new EmpCommand();
     private final static Command FIX = new FixCommand();
-
     private final static Command TURN_RIGHT = new ChangeLaneCommand(1);
     private final static Command TURN_LEFT = new ChangeLaneCommand(-1);
+
+    static Command prevMove = DO_NOTHING;
 
     public Command run(GameState gameState) {
         Car myCar = gameState.player;
@@ -60,12 +60,14 @@ public class Bot {
             List<Object> blocksKiri = getBlocksInFront(myCar.position.lane - 1, myCar.position.block, gameState, myCar.speed);
             jmlObstacleKanan = cntObstacleInFront(blocksKanan);
             jmlObstacleKiri = cntObstacleInFront(blocksKiri);
-            option2 = canRightAndLeft(blocksKiri, blocksKanan);
+            option2 = canRightAndLeft(blocksKiri, blocksKanan, currentLane);
         }
         if (myCar.damage >= 3){
             return FIX;
         }
-        
+        if (myCar.speed == 0){
+            return ACCELERATE;
+        }
         if(option1 != DO_NOTHING){ 
             // Tidak ada Obstacle di lane lurus
             return option1;
@@ -110,7 +112,7 @@ public class Bot {
         int startBlock = map.get(0)[0].position.block;
 
         Lane[] laneList = map.get(lane - 1);
-        for (int i = max(block - startBlock, 0); i <= block - startBlock + (speed == 0? 3:speed); i++) {
+        for (int i = max(block - startBlock, 0); i <= block - startBlock + speed; i++) {
             if (laneList[i] == null || laneList[i].terrain == Terrain.FINISH) {
                 break;
             }
@@ -179,7 +181,7 @@ public class Bot {
         return false;
     }
 
-    public static Command canRightAndLeft(List<Object> blocksKiri, List<Object> blocksKanan) {
+    public static Command canRightAndLeft(List<Object> blocksKiri, List<Object> blocksKanan, int currentLane) {
         // Masukkin blockLane masing-masing arah
         List<Object> leftBlock = blocksKiri;
         List<Object> rightBlock = blocksKanan;
@@ -189,8 +191,13 @@ public class Bot {
         boolean isTurnRight = !rightBlock.contains(Terrain.MUD) && !rightBlock.contains(Terrain.WALL) && !rightBlock.contains(Terrain.OIL_SPILL);
         
         if (isTurnLeft && isTurnRight){ 
-            // Kiri dan kanan bisa. Niatnya pakai fungsi random tapi belum nyari caranya
-            return TURN_LEFT;
+            // Kiri dan kanan bisa. Apabila di line index 1, ambil TURN_RIGHT, kalo line index 2 ambil TURN_RIGHT
+            if (currentLane == 1){
+                return TURN_RIGHT;
+            }
+            else{
+                return TURN_LEFT;
+            }
         }
         else{
             if (isTurnLeft == true && isTurnRight == false){
