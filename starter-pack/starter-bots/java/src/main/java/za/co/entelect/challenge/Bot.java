@@ -85,7 +85,7 @@ public class Bot {
             }
             else{
                 if (jmlObstacleKanan == jmlObstacleKiri){
-                    if (currentLane == 1){
+                    if (currentLane == 2){
                         return TURN_RIGHT;   
                     }
                     else{
@@ -211,7 +211,7 @@ public class Bot {
         
         if (isTurnLeft && isTurnRight){ 
             // Kiri dan kanan bisa. Apabila di line index 1, ambil TURN_RIGHT, kalo line index 2 ambil TURN_RIGHT
-            if (currentLane == 1){
+            if (currentLane == 2){
                 return TURN_RIGHT;
             }
             else{
@@ -258,5 +258,5 @@ public class Bot {
             return DO_NOTHING;
         }
     }
-
+    
 }
