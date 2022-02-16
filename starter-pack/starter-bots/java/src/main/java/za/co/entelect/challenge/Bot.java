@@ -35,14 +35,16 @@ public class Bot {
         // Saya juga sedikit update beberapa di file lurus
         // Kalo ada yg ngacauin, bilang ya hehehe
         // -- Raka
-        
-        List<Object> blocksLurus = getBlocksInFront(myCar.position.lane, myCar.position.block, gameState, myCar.speed);
-        Command option1 = lurus(blocksLurus, myCar);
-        
-        Command option2;
         int jmlObstacleKiri = 999;
         int jmlObstacleKanan = 999;
         int jmlObstacleLurus = 999;
+        
+        List<Object> blocksLurus = getBlocksInFront(myCar.position.lane, myCar.position.block, gameState, myCar.speed);
+        Command option1 = lurus(blocksLurus, myCar);
+        jmlObstacleLurus = cntObstacleInFront(blocksLurus);
+        
+        Command option2;
+        
 
         int currentLane = myCar.position.lane;
         if (currentLane == 1){
